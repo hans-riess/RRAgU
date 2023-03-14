@@ -1,4 +1,4 @@
-function [Y,aggregates] = tarski_laplacian(A,X)
+function [Y,aggregates] = tarski_laplacian(A,X,adjacency_matrix)
     % Tarski Laplacain for assignment X
     % A is the MxDxNxN data array such that A(:,:,i,j) is the mp matrix
     % weight of (directed) edge (i,j)
@@ -9,7 +9,7 @@ function [Y,aggregates] = tarski_laplacian(A,X)
     parfor i=1:N
         Z = mpm_zeros(D,1);
         for j=1:N
-            Z = mpm_add(Z,mpm_multi(mp_conv(mp_inv(A(:,:,i,j))), mp_multi(A(:,:,j,i),X(:,j))));
+            Z = mpm_add(Z,mpm_multi(adjacency_matrix(i,j),mpm_multi(mp_conv(mp_inv(A(:,:,i,j))), mp_multi(A(:,:,j,i),X(:,j)))));
             aggregates(:,j,i) = mpm_multi(mp_conv(mp_inv(A(:,:,i,j))), mp_multi(A(:,:,j,i),X(:,j)));
         end
         Y(:,i) = Z;
