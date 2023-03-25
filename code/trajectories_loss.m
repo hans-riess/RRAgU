@@ -1,5 +1,5 @@
 %% RANDOM NUMBER GENERATOR
-% rng(1)
+rng(10)
 
 %% RANDOM GRAPH
 D = 3; %dimension of matrix weights

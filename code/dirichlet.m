@@ -8,5 +8,5 @@ function [energy] = dirichlet(A,X,p)
             end
         end
     end
-    energy = 1/2*energy;
+    energy = 0.5*energy;
 end

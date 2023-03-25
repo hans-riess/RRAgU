@@ -1,45 +1,39 @@
-%% RANDOM NUMBER GENERATOR
-% rng(1)
-
 %% RANDOM GRAPH
-D = 3; %dimension of matrix weights
-epsilon = 10; %threshold for synchronization
-p_edge = 0.5;
-N = 10;
+epsilon = 1; %threshold for synchronization
+p_edge = 0.2;
+N = 20;
 adj_matrix = mpm_zeros(N);
 for v=1:N
     for w=1:N
         p = rand(1);
         if p < p_edge && v<w
-            adj_matrix(v,w) = epsilon/D+(2*rand(1)-1);
-            adj_matrix(w,v) = epsilon/D+(2*rand(1)-1);
+            adj_matrix(v,w) = 0;
+            adj_matrix(w,v) = adj_matrix(v,w);
         end
     end
 end
 G = graph(adj_matrix~=Inf);
+M = size(G.Edges,1);
 figure(1)
 plot(G)
 %% RANDOM SHEAF
-a_min = -10;
-a_max = 1;
-%initialize A
-A = zeros(D,D,N,N);
+D = 10; %dimension of matrix weights
+a_max = 10;
+A = zeros(D,D,N,N);%initialize A
 for i=1:N
     for j=1:N
         if adj_matrix(i,j) ~= Inf
-            A(:,:,i,j) = randi([a_min,a_max],D,D);
+            A(:,:,i,j) = a_max*rand(D,D)-a_max;
         else
             A(:,:,i,j) = mp_zeros(D,D);
         end
     end
 end
 %% HEAT EQUATION
-x_min = 0;
 x_max = 10;
-D = 3;
 p = 1;
 %run heat equation
-T = 50; % number of iterations
+T = 20; % number of iterations
 n_trials = 20; %number of trials
 E_tarski = zeros(T,1);
 iterations = linspace(0,T-1,T);
@@ -49,7 +43,7 @@ for trial=1:n_trials
     %initialize X
     X0 = zeros(D,N);
     for i=1:N
-        X0(:,i) = randi([x_min,x_max],D,1);
+        X0(:,i) = x_max*randi(D,1);
     end
     X_tarski = X0;
     E_tarski(1) = dirichlet(A,X_tarski,p);
@@ -61,8 +55,7 @@ for trial=1:n_trials
     end
     plot(iterations,E_tarski,'black') %plot energy curve
 end
-
-%% STOPPING CRITERIA
+plot(iterations,epsilon*M*ones(1,T),'red')
 
 
 
