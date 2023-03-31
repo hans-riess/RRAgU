@@ -59,12 +59,14 @@ for trial_N=19:N_trials
     end
 end
 %% PLOT RESULTS
-labels = 'D = ' + string(reshape(DD,D_trials,1));
+labels = '$d = ' + string(reshape(DD,D_trials,1)) + '$';
 figure,hold on;
 title('Scalability Analysis')
-xlabel('Number of Nodes')
+xlabel('Number of Nodes (N)')
 ylabel('Time (s)')
 for trial_D=1:D_trials
     plot(NN(1:18),scalable_matrix(1:18,trial_D),'--s')
 end
-legend(labels)
+legend(labels,'Interpreter','latex')
+xticks(NN)
+yticks(linspace(0,480,9))

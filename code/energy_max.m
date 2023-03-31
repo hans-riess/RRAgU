@@ -1,4 +1,4 @@
-function [energy] = l_inf_energy_max(adjacency_matrix,p)
+function [energy] = energy_max(adjacency_matrix,p)
     [N,~] = size(adjacency_matrix);
     energy = 0;
     for i=1:N
